@@ -1,0 +1,10 @@
+version: '3'
+services:
+  noether_container:
+    image: rosindustrial/noether
+    volumes:
+      - /home/aderic/libs/VTK:/root/libs/VTK/
+      - /home/aderic/libs/pcl:/root/libs/pcl/
+    network_mode: host
+
+

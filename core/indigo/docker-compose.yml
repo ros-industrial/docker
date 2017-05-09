@@ -1,0 +1,9 @@
+version: '3'
+services:
+  node:
+    image: rosindustrial/core:indigo
+    volumes:
+      - /home/aderic/ros/packml_ws/:/root/ros/packml_ws
+    network_mode: host
+
+
