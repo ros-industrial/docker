@@ -4,8 +4,7 @@ MAINTAINER Austin.Deric@gmail.com
 RUN apt-get update && apt-get install -y \
     ros-kinetic-industrial-core \
     python-wstool \
-    python-pip \
+    python-catkin-tools \
     liblapack-dev \
     libblas-dev \
     sudo
-RUN pip install -U catkin_tools
