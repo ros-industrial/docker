@@ -7,6 +7,7 @@ source $DIR_ICI/src/util.sh
 source $DIR_ICI/src/docker.sh
 
 DIR_THIS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+HEADER="# DO NOT EDIT!\n# This file  was auto-generated with ./sync.sh at $(LC_ALL=C date)\n"
 
 function export_dockerfile {
     ROS_DISTRO=$1
@@ -22,9 +23,9 @@ function export_dockerfile {
     local path=$DIR_THIS/$ROS_DISTRO-${5:-$OS_CODE_NAME}${ROS_REPO#ros}
     mkdir -p "$path"
 
-    ici_generate_default_dockerfile > $path/Dockerfile
+    echo -e "$HEADER" > $path/Dockerfile
+    ici_generate_default_dockerfile >> $path/Dockerfile
 }
-
 
 for r in ros ros-shadow-fixed; do
     for d in hydro indigo jade kinetic lunar; do

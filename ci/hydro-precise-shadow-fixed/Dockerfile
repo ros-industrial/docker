@@ -1,3 +1,6 @@
+# DO NOT EDIT!
+# This file  was auto-generated with ./sync.sh at Fri May 12 16:50:41 CEST 2017
+
 FROM ubuntu:precise
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
