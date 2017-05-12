@@ -1,7 +1,8 @@
 # DO NOT EDIT!
-# This file  was auto-generated with ./sync.sh at Fri May 12 16:50:41 CEST 2017
+# This file  was auto-generated with ./sync.sh at Fri May 12 17:02:13 CEST 2017
 
 FROM ubuntu:xenial
+LABEL MAINTAINER "Mathias Lüdtke" <mathias.luedtke@ipa.fraunhofer.de>
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 

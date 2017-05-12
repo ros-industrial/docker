@@ -8,6 +8,7 @@ source $DIR_ICI/src/docker.sh
 
 DIR_THIS="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HEADER="# DO NOT EDIT!\n# This file  was auto-generated with ./sync.sh at $(LC_ALL=C date)\n"
+INJECT_MAINTAINER="/^FROM/a LABEL MAINTAINER \"$(git config --get user.name)\" <$(git config --get user.email)>"
 
 function export_dockerfile {
     ROS_DISTRO=$1
@@ -24,7 +25,7 @@ function export_dockerfile {
     mkdir -p "$path"
 
     echo -e "$HEADER" > $path/Dockerfile
-    ici_generate_default_dockerfile >> $path/Dockerfile
+    ici_generate_default_dockerfile | sed "$INJECT_MAINTAINER" >> $path/Dockerfile
 }
 
 for r in ros ros-shadow-fixed; do
