@@ -1,5 +1,5 @@
 FROM rosindustrial/core:indigo
-LABEL maintainer caffe-maint@googlegroups.com
+LABEL maintainer alexgoins301<at>gmail<dot>com
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
