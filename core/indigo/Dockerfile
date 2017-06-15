@@ -1,6 +1,7 @@
 # rosindustrial/core:indigo
 FROM ros:indigo-robot
-LABEL maintainer "Austin.Deric@gmail.com"
+LABEL maintainer "Austin.Deric@swri.org"
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-indigo-industrial-core \
     python-wstool \

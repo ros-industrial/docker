@@ -1,5 +1,6 @@
-FROM rosindustrial/core:kinetic
-LABEL maintainer alexgoins301<at>gmail<dot>com
+# nvidia-docker build -t rosindustrial/caffe-gpu:indigo .
+FROM rosindustrial/core-nvidia:indigo
+LABEL maintainer "Austin.Deric@swri.org"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
@@ -29,14 +30,14 @@ WORKDIR $CAFFE_ROOT
 
 # FIXME: use ARG instead of ENV once DockerHub supports this
 # https://github.com/docker/hub-feedback/issues/460
-ENV CLONE_TAG=1.0
-
+ENV CLONE_TAG=master
 
 RUN git clone -b ${CLONE_TAG} --depth 1 https://github.com/BVLC/caffe.git . && \
     pip install --upgrade pip && \
     cd python && for req in $(cat requirements.txt) pydot; do pip install $req; done && cd .. && \
+    git clone https://github.com/NVIDIA/nccl.git && cd nccl && make -j install && cd .. && rm -rf nccl && \
     mkdir build && cd build && \
-    cmake -DCPU_ONLY=1 .. && \
+    cmake -DUSE_CUDNN=1 -DUSE_NCCL=1 .. && \
     make -j"$(nproc)"
 
 ENV PYCAFFE_ROOT $CAFFE_ROOT/python
