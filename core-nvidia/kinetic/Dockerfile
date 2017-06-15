@@ -1,6 +1,6 @@
-# rosindustrial/core:kinetic
-FROM ros:kinetic-robot
-LABEL maintainer "Austin.Deric@swri.org"
+# rosindustrial/core-nvidia:kinetic
+FROM rosindustrial/ros-robot-nvidia:kinetic
+LABEL maintainer "Austin.Deric@SwRI.org"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-kinetic-industrial-core \

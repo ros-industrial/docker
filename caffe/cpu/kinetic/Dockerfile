@@ -1,5 +1,5 @@
-FROM rosindustrial/core:indigo
-LABEL maintainer alexgoins301<at>gmail<dot>com
+FROM rosindustrial/core:kinetic
+LABEL maintainer "alexgoins301<at>gmail<dot>com"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
@@ -29,8 +29,8 @@ WORKDIR $CAFFE_ROOT
 
 # FIXME: use ARG instead of ENV once DockerHub supports this
 # https://github.com/docker/hub-feedback/issues/460
-ENV CLONE_TAG=master
-#1.0
+ENV CLONE_TAG=1.0
+
 
 RUN git clone -b ${CLONE_TAG} --depth 1 https://github.com/BVLC/caffe.git . && \
     pip install --upgrade pip && \

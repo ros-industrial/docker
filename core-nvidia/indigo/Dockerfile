@@ -1,9 +1,9 @@
-# rosindustrial/core:kinetic
-FROM ros:kinetic-robot
-LABEL maintainer "Austin.Deric@swri.org"
+# nvidia-docker build -t rosindustrial/core-nvidia:indigo .
+FROM rosindustrial/ros-robot-nvidia:indigo
+LABEL maintainer "Austin.Deric@SwRI.org"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-kinetic-industrial-core \
+    ros-indigo-industrial-core \
     python-wstool \
     python-catkin-tools \
     liblapack-dev \

@@ -1,6 +1,7 @@
 # rosindustrial/webtools:kinetic
 FROM rosindustrial/core:kinetic
-LABEL maintainer "Austin.Deric@gmail.com"
+LABEL maintainer "Austin.Deric@SwRI.org"
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
   ros-kinetic-rosbridge-suite \
   ros-kinetic-tf2-web-republisher && \
