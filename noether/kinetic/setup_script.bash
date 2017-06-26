@@ -1,5 +1,8 @@
 #!/bin/bash
 git clone https://github.com/Kitware/VTK.git
+cd VTK
+git checkout tags/v7.1.0
+cd ..
 mkdir /vtk_build
 cd /vtk_build
 cmake -DCMAKE_BUILD_TYPE=MinSizeRel ../VTK
