@@ -1,8 +1,14 @@
-# rosindustrial/noether:kinetic
-FROM rosindustrial/core:kinetic
+# rosindustrial/noether:kinetic-1.8-8.0
+FROM rosindustrial/core-vtk:kinetic-7.1
 LABEL maintainer "Austin.Deric@SwRI.org"
 
-COPY setup_script.bash /
-RUN bash -c "chmod +x /setup_script.bash && /setup_script.bash"
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN git clone https://github.com/PointCloudLibrary/pcl.git
+WORKDIR /pcl
+RUN git checkout tags/pcl-1.8.0
+RUN mkdir /pcl_build
+WORKDIR /pcl_build
+cmake -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_CUDA=ON -DBUILD_GPU=ON -DWITH_ENSENSO=ON /pcl
+RUN make
+RUN make install
+RUN rm -rf /pcl_build /pcl
+
