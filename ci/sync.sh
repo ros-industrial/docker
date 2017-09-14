@@ -11,11 +11,13 @@ HEADER="# DO NOT EDIT!\n# This file  was auto-generated with ./sync.sh at $(LC_A
 INJECT_MAINTAINER="/^FROM/a LABEL MAINTAINER \"$(git config --get user.name)\" <$(git config --get user.email)>"
 
 function export_dockerfile {
+    echo $*
     ROS_DISTRO=$1
     ROS_REPO=$2
-    UBUNTU_OS_CODE_NAME=
+    OS_NAME=
     OS_CODE_NAME=
     DOCKER_BASE_IMAGE=
+    ROS_REPOSITORY_PATH=
 
     source $DIR_ICI/src/env.sh
     OS_CODE_NAME=${3:-$OS_CODE_NAME}
