@@ -1,6 +1,13 @@
 # docker
 ROS-Industrial container tools.
 
+To pull images, you need to either specify `tag` or pull all tags with `-a` option. Taking `core` repo as an exmaple,
+
+```
+docker pull rosindustrial/core:kinetic  (pulling a tag)
+docker pull rosindustrial/core -a       (pulling all tags)
+```
+
 ## caffe-cpu
 [BVLC's caffe image](https://github.com/BVLC/caffe) built ontop of the rosindustrial/core image.
 
@@ -11,7 +18,7 @@ ROS-Industrial container tools.
 Continuous Integration Dockerfiles for ros-industrial environments
 
 ## core
-core docker is the root container for all others.
+core docker is the root container for all others. 
 
 ## webtools
 ros-bridge-suite and all packages nessesary to run robotwebtools
