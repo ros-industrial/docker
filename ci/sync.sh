@@ -2,7 +2,7 @@
 
 set -e
 
-DIR_ICI=$(rospack find industrial_ci)
+DIR_ICI="${1:-$(rospack find industrial_ci)}"
 source $DIR_ICI/src/util.sh
 source $DIR_ICI/src/docker.sh
 
@@ -31,12 +31,15 @@ function export_dockerfile {
 }
 
 for r in ros ros-shadow-fixed; do
-    for d in hydro indigo jade kinetic lunar; do
+    for d in hydro indigo jade kinetic lunar melodic; do
         export_dockerfile $d $r
     done
     export_dockerfile kinetic $r jessie debian:jessie
     export_dockerfile lunar $r yakkety
     export_dockerfile lunar $r zesty
     export_dockerfile lunar $r stretch debian:stretch
+    export_dockerfile lunar $r stretch debian:stretch
+    export_dockerfile melodic $r stretch debian:stretch
+    export_dockerfile melodic $r artful
 done
 
