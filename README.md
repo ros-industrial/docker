@@ -1,6 +1,8 @@
 # docker
 ROS-Industrial container tools.
 
+[![Build Status](https://travis-ci.org/ros-industrial/docker.svg?branch=master)](https://travis-ci.org/ros-industrial/docker)
+
 ## caffe-cpu
 [BVLC's caffe image](https://github.com/BVLC/caffe) built ontop of the rosindustrial/core image.
 
@@ -12,9 +14,6 @@ Continuous Integration Dockerfiles for ros-industrial environments
 
 ## core
 core docker is the root container for all others.
-
-## webtools
-ros-bridge-suite and all packages nessesary to run robotwebtools
 
 ## noether
 PCL 1.8 built with VTK 7.1.
