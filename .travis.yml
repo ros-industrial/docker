@@ -4,7 +4,7 @@ language: generic
 
 env:
   - REPOS="ci"
-  - REPOS="core/kinetic caffe/cpu/kinetic webtools viz noether noether-webtools a5" DEFAULT_TAG=kinetic
+  - REPOS="core/kinetic caffe/cpu/kinetic noether" DEFAULT_TAG=kinetic
   - REPOS="core/indigo caffe/cpu/indigo"
   - REPOS="ros-core-nvidia/kinetic ros-base-nvidia/kinetic ros-robot-nvidia/kinetic core-nvidia/kinetic caffe/gpu/kinetic"
   - REPOS="ros-core-nvidia/indigo ros-base-nvidia/indigo ros-robot-nvidia/indigo core-nvidia/indigo caffe/gpu/indigo"
