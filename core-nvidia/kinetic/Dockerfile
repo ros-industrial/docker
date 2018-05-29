@@ -1,5 +1,5 @@
-# rosindustrial/core-nvidia:kinetic
-FROM rosindustrial/ros-robot-nvidia:kinetic
+# rosindustrial/core-nvidia:kinetic-8.0
+FROM rosindustrial/ros-robot-nvidia:kinetic-8.0
 LABEL maintainer "Austin.Deric@SwRI.org"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \

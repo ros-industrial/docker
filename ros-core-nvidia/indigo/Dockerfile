@@ -1,4 +1,4 @@
-# nvidia-docker build -t rosindustrial/ros-core-nvidia:indigo .
+# rosindustrial/ros-core-nvidia:indigo-8.0
 FROM nvidia/cuda:8.0-devel-ubuntu14.04
 LABEL maintainer "Austin.Deric@SwRI.org"
 

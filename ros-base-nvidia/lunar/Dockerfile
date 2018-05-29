@@ -1,5 +1,5 @@
-# nvidia-docker build -t rosindustrial/ros-base-nvidia:lunar .
-FROM rosindustrial/ros-core-nvidia:lunar
+# rosindustrial/ros-base-nvidia:lunar
+FROM rosindustrial/ros-core-nvidia:lunar-8.0
 LABEL maintainer "Austin.Deric@SwRI.org"
 
 RUN apt-get update && apt-get install -y \

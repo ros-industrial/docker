@@ -1,4 +1,4 @@
-# nvidia-docker build -t rosindustrial/ros-core-nvidia:lunar .
+# rosindustrial/ros-core-nvidia:lunar-8.0
 FROM nvidia/cuda:8.0-devel-ubuntu16.04
 LABEL maintainer "Austin.Deric@SwRI.org"
 
