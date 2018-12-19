@@ -1,0 +1,9 @@
+#!/bin/bash
+rm -rf /ici
+git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git /ici
+
+if [ -n "$GITHUB_REPOSITORY" ] && [ -z "$TARGET_REPO_NAME" ]; then
+    export TARGET_REPO_NAME="${GITHUB_REPOSITORY##*/}"
+fi
+
+IN_DOCKER=true /ici/ci.sh "$@"
