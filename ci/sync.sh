@@ -28,6 +28,7 @@ function export_dockerfile {
 
     echo -e "$HEADER" > $path/Dockerfile
     ici_generate_default_dockerfile | sed "$INJECT_MAINTAINER" >> $path/Dockerfile
+    echo "RUN wget -q -O /bin/run-industrial-ci https://raw.githubusercontent.com/ros-industria/docker/master/ci/run-industrial-ci && chmod +x /bin/run-industrial-ci" >> $path/Dockerfile
 }
 
 for r in ros ros-shadow-fixed; do
@@ -42,4 +43,3 @@ for r in ros ros-shadow-fixed; do
     export_dockerfile melodic $r stretch debian:stretch
     export_dockerfile melodic $r artful
 done
-
