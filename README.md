@@ -1,6 +1,6 @@
 # docker
 ROS-Industrial container tools.
-[![Build Status](https://travis-ci.org/ros-industrial/docker.svg?branch=master)](https://travis-ci.org/ros-industrial/docker)
+[![Build Status](https://travis-ci.com/ros-industrial/docker.svg?branch=master)](https://travis-ci.com/ros-industrial/docker)
 
 ## [caffe-cpu](https://hub.docker.com/r/rosindustrial/caffe-cpu)
 [BVLC's caffe image](https://github.com/BVLC/caffe) built ontop of the rosindustrial/core image.
