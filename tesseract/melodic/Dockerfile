@@ -1,7 +1,7 @@
 FROM ros:melodic-perception
 MAINTAINER Levi Armstrong
 
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-melodic-ompl \
