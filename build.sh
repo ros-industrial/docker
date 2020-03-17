@@ -18,7 +18,13 @@ for a in "$@"; do
       b=$!
     fi
 
-    time docker build -q -t "$t" "$d" || ret=$?
+    if [ -z "$BUILD_ARGS" ]
+    then
+      time docker build -q -t "$t" "$d" || ret=$?
+    else
+      time docker build -q -t "$t" "$d" --build-arg $BUILD_ARGS || ret=$?
+    fi
+
     [ "$ret" = "" ]
 
     if [ "$TRAVIS" ]; then
