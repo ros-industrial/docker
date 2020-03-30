@@ -75,4 +75,14 @@ RUN mkdir /gtest_build && \
     cd .. && \
     rm -rf /gtest /gtest_build 
 
+RUN wget http://www.cmake.org/files/v3.12/cmake-3.12.1.tar.gz
+RUN tar -xvzf cmake-3.12.1.tar.gz 
+RUN cd cmake-3.12.1/ && \
+    ./configure && \
+    make -j8 && \
+    make install && \
+    update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force && \
+    cd .. && \
+    rm -rf /cmake-3.12.1
+
 CMD ["bash"]
