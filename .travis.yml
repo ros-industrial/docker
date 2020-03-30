@@ -8,7 +8,7 @@ env:
   - REPOS="core/indigo caffe/cpu/indigo"
   - REPOS="ros-core-nvidia/kinetic ros-base-nvidia/kinetic ros-robot-nvidia/kinetic core-nvidia/kinetic caffe/gpu/kinetic"
   - REPOS="ros-core-nvidia/lunar ros-base-nvidia/lunar ros-robot-nvidia/lunar"
-  - REPOS="tesseract" DEFAULT_TAG=kinetic BUILD_ARGS=kinetic
-  - REPOS="tesseract" DEFAULT_TAG=melodic BUILD_ARGS=melodic
+  - REPOS="tesseract" DEFAULT_TAG=kinetic BUILD_ARGS="ROSDISTRO=kinetic"
+  - REPOS="tesseract" DEFAULT_TAG=melodic BUILD_ARGS="ROSDISTRO=melodic"
 
 script: ./build.sh $REPOS
