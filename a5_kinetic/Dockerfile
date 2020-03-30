@@ -9,7 +9,6 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
       libpcap-dev \
       libboost-all-dev \
       libproj-dev \
-      libceres-dev \
       && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
