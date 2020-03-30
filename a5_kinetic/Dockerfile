@@ -1,5 +1,5 @@
 FROM rosindustrial/core:kinetic
-LABEL maintainer="Josh Langsfeld <jdlangs@gmail.com>"
+LABEL maintainer="Stevie Dale <sdale4@asu.edu>"
 
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
       make cmake build-essential git checkinstall \
@@ -28,7 +28,6 @@ RUN \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
     make -j 4 && checkinstall --default --pkgname=pcl-1.8.0 && \
     make clean && cd /tmp && rm -rf pcl-trunk
-
 
 RUN ldconfig
 WORKDIR /
