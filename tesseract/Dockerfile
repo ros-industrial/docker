@@ -75,14 +75,16 @@ RUN mkdir /gtest_build && \
     cd .. && \
     rm -rf /gtest /gtest_build 
 
-RUN wget http://www.cmake.org/files/v3.12/cmake-3.12.1.tar.gz
-RUN tar -xvzf cmake-3.12.1.tar.gz 
-RUN cd cmake-3.12.1/ && \
-    ./configure && \
+RUN if [ "$ROSDISTRO" = "kinetic" ] ; then git clone --branch v1.5.0 https://github.com/google/benchmark.git ; fi
+RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
+    mkdir /gbenchmark_build && \
+    cd /gbenchmark_build && \
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-w -std=c++14" -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DBUILD_SHARED_LIBS=ON ../benchmark && \
     make -j8 && \
     make install && \
-    update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force && \
     cd .. && \
-    rm -rf /cmake-3.12.1
+    rm -rf /benchmark /gbenchmark_build ; fi
+
+ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 
 CMD ["bash"]
