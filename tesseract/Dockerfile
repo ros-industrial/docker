@@ -8,82 +8,104 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    ros-$ROSDISTRO-ompl \
-    python-catkin-tools \
-    ros-$ROSDISTRO-octomap-msgs \
-    ros-$ROSDISTRO-octomap \
-    libassimp-dev \
-    libtinyxml-dev \
-    tar \
-    wget \
-    ros-$ROSDISTRO-rviz \
-    ros-$ROSDISTRO-octomap-ros \
     clang \
     clang-tidy \
-    libomp-dev \
     lcov \
+    libassimp-dev \
+    libomp-dev \
+    libtinyxml-dev \
+    python-catkin-tools \
+    ros-$ROSDISTRO-octomap \
+    ros-$ROSDISTRO-octomap-msgs \
+    ros-$ROSDISTRO-octomap-ros \
+    ros-$ROSDISTRO-ompl \
+    ros-$ROSDISTRO-rviz \
+    tar \
+    wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+WORKDIR /bullet3_build
 RUN git clone --branch master https://github.com/bulletphysics/bullet3.git
-RUN mkdir /bullet3_build && \
-    cd /bullet3_build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-w -std=c++14" -DCMAKE_C_FLAGS="-w" -DBUILD_UNIT_TESTS=OFF -DBUILD_SHARED_LIBS=ON -DBULLET2_MULTITHREADING=OFF -DUSE_DOUBLE_PRECISION=ON ../bullet3 && \
+RUN cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
+      -DCMAKE_C_FLAGS="-w" \
+      -DBUILD_UNIT_TESTS=OFF \
+      -DBUILD_SHARED_LIBS=ON \
+      -DBULLET2_MULTITHREADING=OFF \
+      -DUSE_DOUBLE_PRECISION=ON \
+      /bullet3_build/bullet3 && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /bullet3 /bullet3_build 
-    
+    rm -rf /bullet3_build 
+
+WORKDIR /libccd_build
 RUN git clone --branch master https://github.com/danfis/libccd.git
-RUN mkdir /libccd_build && \
-    cd /libccd_build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-w -std=c++14" -DCMAKE_C_FLAGS="-w" -DENABLE_DOUBLE_PRECISION=ON ../libccd && \
+RUN cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
+      -DCMAKE_C_FLAGS="-w" \
+      -DENABLE_DOUBLE_PRECISION=ON \
+      /libccd_build/libccd && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /libccd /libccd_build 
+    rm -rf /libccd_build 
 
 ENV PKG_CONFIG_PATH /opt/ros/$ROSDISTRO/lib/pkgconfig
 ENV LD_LIBRARY_PATH /opt/ros/$ROSDISTRO/lib
+WORKDIR /fcl_build
 RUN git clone --branch master https://github.com/flexible-collision-library/fcl.git
-RUN mkdir /fcl_build && \
-    cd /fcl_build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-w -std=c++14" -DBUILD_TESTING=OFF ../fcl && \
+RUN cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
+      -DBUILD_TESTING=OFF \
+      /fcl_build/fcl && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /fcl /fcl_build 
+    rm -rf /fcl_build 
 
+WORKDIR /swig_build
 RUN wget http://prdownloads.sourceforge.net/swig/swig-4.0.1.tar.gz
-RUN tar -xvf swig-4.0.1.tar.gz
-RUN cd /swig-4.0.1 && \
-    ./configure && \
+RUN tar -xzvf swig-4.0.1.tar.gz --strip 1
+RUN ./configure && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm swig-4.0.1.tar.gz && \
-    rm -rf /swig-4.0.1 && \
+    rm -rf /swig_build && \
     ln -s /usr/local/bin/swig /usr/local/bin/swig4.0 && \
     ln -s /usr/local/bin/ccache-swig /usr/local/bin/ccache-swig4.0
 
+WORKDIR /gtest_build
 RUN git clone --branch release-1.8.1 https://github.com/google/googletest.git
-RUN mkdir /gtest_build && \
-    cd /gtest_build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-w -std=c++14" -DBUILD_GMOCK=OFF -DBUILD_GTEST=ON -DBUILD_SHARED_LIBS=ON ../googletest && \
+RUN cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
+      -DBUILD_GMOCK=OFF \
+      -DBUILD_GTEST=ON \
+      -DBUILD_SHARED_LIBS=ON \
+      /gtest_build/googletest && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /gtest /gtest_build 
+    rm -rf /gtest_build 
 
+WORKDIR /gbenchmark_build
 RUN if [ "$ROSDISTRO" = "kinetic" ] ; then git clone --branch v1.5.0 https://github.com/google/benchmark.git ; fi
 RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
-    mkdir /gbenchmark_build && \
-    cd /gbenchmark_build && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-w -std=c++14" -DBENCHMARK_ENABLE_GTEST_TESTS=OFF -DBUILD_SHARED_LIBS=ON ../benchmark && \
+    cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
+      -DBENCHMARK_ENABLE_GTEST_TESTS=OFF \
+      -DBUILD_SHARED_LIBS=ON \
+      /gbenchmark_build/benchmark && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /benchmark /gbenchmark_build ; fi
+    rm -rf /gbenchmark_build ; fi
 
 ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
 
