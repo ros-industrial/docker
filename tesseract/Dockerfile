@@ -107,6 +107,4 @@ RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
     cd .. && \
     rm -rf /gbenchmark_build ; fi
 
-ENV LD_LIBRARY_PATH /usr/local/lib:$LD_LIBRARY_PATH
-
 CMD ["bash"]
