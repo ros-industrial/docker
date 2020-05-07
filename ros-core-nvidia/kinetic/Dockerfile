@@ -3,8 +3,7 @@ FROM nvidia/cuda:8.0-devel-ubuntu16.04
 LABEL maintainer "Austin.Deric@SwRI.org"
 
 ENV ROS_DISTRO kinetic
-
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -qq     && apt-get -qq install --no-install-recommends -y apt-utils gnupg wget ca-certificates lsb-release dirmngr
 
