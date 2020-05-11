@@ -1,6 +1,5 @@
 # nvidia-docker build -t rosindustrial/ros-desktop-full:kinetic-nvidia9.2 .
 FROM nvidia/cuda:9.2-devel-ubuntu16.04
-LABEL maintainer "Austin.Deric@gmail.org"
 
 # Setup your sources.list
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list'
