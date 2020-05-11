@@ -1,6 +1,5 @@
 # nvidia-docker build -t rosindustrial/ros-core-nvidia:kinetic .
 FROM nvidia/cuda:8.0-devel-ubuntu16.04
-LABEL maintainer "Austin.Deric@SwRI.org"
 
 ENV ROS_DISTRO kinetic
 ARG DEBIAN_FRONTEND=noninteractive
