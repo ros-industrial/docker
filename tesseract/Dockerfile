@@ -13,13 +13,13 @@ RUN apt-get update \
     lcov \
     libassimp-dev \
     libomp-dev \
+    libompl-dev \
     libtinyxml-dev \
-    python-catkin-tools \
+    libtinyxml2-dev \
+    liboctomap-dev \
     ros-$ROSDISTRO-octomap \
-    ros-$ROSDISTRO-octomap-msgs \
-    ros-$ROSDISTRO-octomap-ros \
-    ros-$ROSDISTRO-ompl \
     ros-$ROSDISTRO-rviz \
+    git-all \
     tar \
     wget \
     && apt-get clean \
