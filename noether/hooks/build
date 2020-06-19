@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+echo "------ HOOK START - BUILD -------"
+printenv
+
+docker build --build-arg ROSDISTRO=$DOCKER_TAG -t $IMAGE_NAME .
