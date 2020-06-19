@@ -1,13 +1,20 @@
 ARG ROSDISTRO=melodic
 
-FROM rosindustrial/core:$ROSDISTRO
+FROM ros:$ROSDISTRO-robot
 MAINTAINER Levi Armstrong
 
 ARG ROSDISTRO
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends
+    && apt-get install -y --no-install-recommends \
+    python-wstool \
+    python-catkin-tools \
+    liblapack-dev \
+    libblas-dev \
+    sudo && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /vtk_build
 RUN git clone --branch v8.2.0 https://github.com/Kitware/VTK.git
