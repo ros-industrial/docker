@@ -10,7 +10,9 @@ env:
   - REPOS="ros-core-nvidia/lunar ros-base-nvidia/lunar ros-robot-nvidia/lunar"
   - REPOS="tesseract" DEFAULT_TAG=kinetic BUILD_ARGS="ROSDISTRO=kinetic"
   - REPOS="tesseract" DEFAULT_TAG=melodic BUILD_ARGS="ROSDISTRO=melodic"
+  - REPOS="tesseract" DEFAULT_TAG=noetic BUILD_ARGS="ROSDISTRO=noetic"
   - REPOS="noether" DEFAULT_TAG=kinetic BUILD_ARGS="ROSDISTRO=kinetic"
   - REPOS="noether" DEFAULT_TAG=melodic BUILD_ARGS="ROSDISTRO=melodic"
+  - REPOS="noether" DEFAULT_TAG=noetic BUILD_ARGS="ROSDISTRO=noetic"
 
 script: ./build.sh $REPOS
