@@ -22,7 +22,7 @@ RUN apt-get update \
 WORKDIR /vtk_build
 RUN git clone --branch v8.2.0 https://github.com/Kitware/VTK.git
 RUN cmake -DCMAKE_BUILD_TYPE=Release /vtk_build/VTK && \
-    make -j1 && \
+    make -j8 && \
     make install && \
     cd .. && \
     rm -rf /vtk_build
@@ -30,7 +30,7 @@ RUN cmake -DCMAKE_BUILD_TYPE=Release /vtk_build/VTK && \
 WORKDIR /pcl_build
 RUN git clone --branch pcl-1.9.1 https://github.com/PointCloudLibrary/pcl.git
 RUN cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_surface_on_nurbs:BOOL=ON /pcl_build/pcl && \
-    make -j1 && \
+    make -j8 && \
     make install && \
     cd .. && \
     rm -rf /pcl_build
