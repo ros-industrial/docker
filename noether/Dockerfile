@@ -12,6 +12,7 @@ RUN apt-get update \
     libblas-dev \
     libgl1-mesa-dev \
     libxt-dev \
+    libflann-dev \
     git-all \
     tar \
     wget \
