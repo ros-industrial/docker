@@ -1,6 +1,7 @@
 ARG ROSDISTRO=melodic
+ARG ROS_BASE_TAG=melodic-perception
 
-FROM ros:$ROSDISTRO-perception
+FROM ros:$ROS_BASE_TAG
 MAINTAINER Levi Armstrong
 
 ARG ROSDISTRO
@@ -17,13 +18,23 @@ RUN apt-get update \
     libtinyxml-dev \
     libtinyxml2-dev \
     liboctomap-dev \
-    ros-$ROSDISTRO-octomap \
-    ros-$ROSDISTRO-rviz \
     git-all \
     tar \
     wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN if [ "$ROSDISTRO" = "foxy" ] ; then \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    ros-$ROSDISTRO-perception-pcl \
+    ros-$ROSDISTRO-rviz2; else \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    ros-$ROSDISTRO-octomap \
+    ros-$ROSDISTRO-rviz && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* ; fi
 
 WORKDIR /bullet3_build
 RUN git clone --branch master https://github.com/bulletphysics/bullet3.git
@@ -39,7 +50,7 @@ RUN cmake \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /bullet3_build 
+    rm -rf /bullet3_build
 
 WORKDIR /libccd_build
 RUN git clone --branch master https://github.com/danfis/libccd.git
@@ -52,7 +63,7 @@ RUN cmake \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /libccd_build 
+    rm -rf /libccd_build
 
 ENV PKG_CONFIG_PATH /opt/ros/$ROSDISTRO/lib/pkgconfig
 ENV LD_LIBRARY_PATH /opt/ros/$ROSDISTRO/lib
@@ -66,7 +77,7 @@ RUN cmake \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /fcl_build 
+    rm -rf /fcl_build
 
 WORKDIR /swig_build
 RUN wget http://prdownloads.sourceforge.net/swig/swig-4.0.1.tar.gz
@@ -91,7 +102,7 @@ RUN cmake \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /gtest_build 
+    rm -rf /gtest_build
 
 WORKDIR /gbenchmark_build
 RUN if [ "$ROSDISTRO" = "kinetic" ] ; then git clone --branch v1.5.0 https://github.com/google/benchmark.git ; fi
