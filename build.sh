@@ -22,7 +22,7 @@ for a in "$@"; do
     then
       time docker build -q -t "$t" "$d" || ret=$?
     else
-      time docker build -q -t "$t" "$d" --build-arg $BUILD_ARGS || ret=$?
+      time docker build -q -t "$t" "$d" $BUILD_ARGS || ret=$?
     fi
 
     [ "$ret" = "" ]
