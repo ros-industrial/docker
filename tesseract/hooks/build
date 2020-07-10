@@ -3,4 +3,8 @@
 echo "------ HOOK START - BUILD -------"
 printenv
 
-docker build --build-arg ROSDISTRO=$DOCKER_TAG -t $IMAGE_NAME .
+if [ "$DOCKER_TAG" = "foxy" ] ; then
+docker build --build-arg ROSDISTRO=$DOCKER_TAG ROS_BASE_TAG=$DOCKER_TAG -t $IMAGE_NAME .
+else
+docker build --build-arg ROSDISTRO=$DOCKER_TAG ROS_BASE_TAG=$DOCKER_TAG-perception -t $IMAGE_NAME .
+fi
