@@ -36,6 +36,14 @@ RUN if [ "$ROSDISTRO" = "foxy" ] ; then \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* ; fi
 
+RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    python-pip && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
+  pip install cmake ; fi
+
 WORKDIR /bullet3_build
 RUN git clone --branch master https://github.com/bulletphysics/bullet3.git
 RUN cmake \
@@ -117,5 +125,7 @@ RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
     make install && \
     cd .. && \
     rm -rf /gbenchmark_build ; fi
+
+RUN git config --global user.email tesseract@ros-industrial.com && git config --global user.name ROS Industrial
 
 CMD ["bash"]
