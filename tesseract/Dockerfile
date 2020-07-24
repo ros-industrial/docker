@@ -126,6 +126,16 @@ RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
     cd .. && \
     rm -rf /gbenchmark_build ; fi
 
+WORKDIR /taskflow_build
+RUN git clone --branch master https://github.com/taskflow/taskflow.git
+RUN cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      /taskflow_build/taskflow && \
+    make -j8 && \
+    make install && \
+    cd .. && \
+    rm -rf /taskflow_build
+
 RUN git config --global user.email tesseract@ros-industrial.com && git config --global user.name ROS Industrial
 
 CMD ["bash"]
