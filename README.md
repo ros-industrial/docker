@@ -7,9 +7,6 @@ ROS-Industrial container tools.
 
 ## [caffe-gpu](https://hub.docker.com/r/rosindustrial/caffe-gpu)
 
-## [ci](https://hub.docker.com/r/rosindustrial/ci)
-Continuous Integration Dockerfiles for ros-industrial environments
-
 ## [core](https://hub.docker.com/r/rosindustrial/core)
 core docker is the root container for all others. 
 

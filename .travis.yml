@@ -3,7 +3,6 @@ services:
 language: generic
 
 env:
-  - REPOS="ci"
   - REPOS="core/kinetic caffe/cpu/kinetic" DEFAULT_TAG=kinetic
   - REPOS="core/indigo caffe/cpu/indigo"
   - REPOS="ros-core-nvidia/kinetic ros-base-nvidia/kinetic ros-robot-nvidia/kinetic core-nvidia/kinetic caffe/gpu/kinetic"
