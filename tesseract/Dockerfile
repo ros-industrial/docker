@@ -88,8 +88,8 @@ RUN cmake \
     rm -rf /fcl_build
 
 WORKDIR /swig_build
-RUN wget http://prdownloads.sourceforge.net/swig/swig-4.0.1.tar.gz
-RUN tar -xzvf swig-4.0.1.tar.gz --strip 1
+RUN wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz
+RUN tar -xzvf swig-4.0.2.tar.gz --strip 1
 RUN ./configure && \
     make -j8 && \
     make install && \
