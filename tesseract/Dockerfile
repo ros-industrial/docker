@@ -127,7 +127,7 @@ RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
     rm -rf /gbenchmark_build ; fi
 
 WORKDIR /taskflow_build
-RUN git clone --branch master https://github.com/taskflow/taskflow.git
+RUN git clone --branch v2.6.0 https://github.com/taskflow/taskflow.git
 RUN cmake \
       -DCMAKE_BUILD_TYPE=Release \
       /taskflow_build/taskflow && \
