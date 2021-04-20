@@ -28,25 +28,69 @@ RUN if [ "$ROSDISTRO" = "foxy" ] ; then \
   apt-get update && \
   apt-get install -y --no-install-recommends \
     ros-$ROSDISTRO-perception-pcl \
-    ros-$ROSDISTRO-rviz2; else \
+    ros-$ROSDISTRO-rviz2 \
+    libbullet-dev \
+    libbullet-extras-dev && \
+    apt-get clean && \
+  rm -rf /var/lib/apt/lists/* ; fi
+
+RUN if [ "$ROSDISTRO" = "noetic" ] ; then \
   apt-get update && \
   apt-get install -y --no-install-recommends \
+    ros-$ROSDISTRO-octomap \
+    ros-$ROSDISTRO-rviz \
+    ros-$ROSDISTRO-taskflow \
+    ros-$ROSDISTRO-fcl \
+    libbullet-dev \
+    libbullet-extras-dev && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* ; fi
+
+RUN if [ "$ROSDISTRO" = "melodic" ] ; then \
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+    python-pip \
     ros-$ROSDISTRO-octomap \
     ros-$ROSDISTRO-rviz && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* ; fi
 
-RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
-  apt-get update && \
-  apt-get install -y --no-install-recommends \
-    python-pip && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* && \
-  pip install cmake ; fi
+ENV PKG_CONFIG_PATH /opt/ros/$ROSDISTRO/lib/pkgconfig
+ENV LD_LIBRARY_PATH /opt/ros/$ROSDISTRO/lib
 
-WORKDIR /bullet3_build
-RUN git clone --branch master https://github.com/bulletphysics/bullet3.git
-RUN cmake \
+WORKDIR /multi_distro_build
+RUN mkdir swig_build && \
+    cd swig_build && \
+    wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz && \
+    tar -xzvf swig-4.0.2.tar.gz --strip 1 && \
+    ./configure && \
+    make -j8 && \
+    make install && \
+    ln -s /usr/local/bin/swig /usr/local/bin/swig4.0 && \
+    ln -s /usr/local/bin/ccache-swig /usr/local/bin/ccache-swig4.0 && \
+    cd .. && \
+    mkdir gtest_build && \
+    cd gtest_build && \
+    git clone --branch release-1.8.1 https://github.com/google/googletest.git && \
+    cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
+      -DBUILD_GMOCK=OFF \
+      -DBUILD_GTEST=ON \
+      -DBUILD_SHARED_LIBS=ON \
+      /multi_distro_build/gtest_build/googletest && \
+    make -j8 && \
+    make install && \
+    cd .. && \
+    cd .. && \
+    rm -rf /multi_distro_build
+
+WORKDIR /ext_build
+RUN if [ "$ROSDISTRO" = "melodic" ] ; then \
+    mkdir bullet_build && \
+    cd bullet_build && \
+    git clone --branch master https://github.com/bulletphysics/bullet3.git && \
+    cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_CXX_FLAGS="-w -std=c++14" \
       -DCMAKE_C_FLAGS="-w" \
@@ -54,87 +98,71 @@ RUN cmake \
       -DBUILD_SHARED_LIBS=ON \
       -DBULLET2_MULTITHREADING=OFF \
       -DUSE_DOUBLE_PRECISION=ON \
-      /bullet3_build/bullet3 && \
+      /ext_build/bullet_build/bullet3 && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /bullet3_build
-
-WORKDIR /libccd_build
-RUN git clone --branch master https://github.com/danfis/libccd.git
-RUN cmake \
+    mkdir ccd_build && \
+    cd ccd_build && \
+    git clone --branch master https://github.com/danfis/libccd.git && \
+    cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_CXX_FLAGS="-w -std=c++14" \
       -DCMAKE_C_FLAGS="-w" \
       -DENABLE_DOUBLE_PRECISION=ON \
-      /libccd_build/libccd && \
+      /ext_build/ccd_build/libccd && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /libccd_build
-
-ENV PKG_CONFIG_PATH /opt/ros/$ROSDISTRO/lib/pkgconfig
-ENV LD_LIBRARY_PATH /opt/ros/$ROSDISTRO/lib
-WORKDIR /fcl_build
-RUN git clone --branch master https://github.com/flexible-collision-library/fcl.git
-RUN cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
-      -DBUILD_TESTING=OFF \
-      /fcl_build/fcl && \
-    make -j8 && \
-    make install && \
-    cd .. && \
-    rm -rf /fcl_build
-
-WORKDIR /swig_build
-RUN wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz
-RUN tar -xzvf swig-4.0.2.tar.gz --strip 1
-RUN ./configure && \
-    make -j8 && \
-    make install && \
-    cd .. && \
-    rm -rf /swig_build && \
-    ln -s /usr/local/bin/swig /usr/local/bin/swig4.0 && \
-    ln -s /usr/local/bin/ccache-swig /usr/local/bin/ccache-swig4.0
-
-WORKDIR /gtest_build
-RUN git clone --branch release-1.8.1 https://github.com/google/googletest.git
-RUN cmake \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
-      -DBUILD_GMOCK=OFF \
-      -DBUILD_GTEST=ON \
-      -DBUILD_SHARED_LIBS=ON \
-      /gtest_build/googletest && \
-    make -j8 && \
-    make install && \
-    cd .. && \
-    rm -rf /gtest_build
-
-WORKDIR /gbenchmark_build
-RUN if [ "$ROSDISTRO" = "kinetic" ] ; then git clone --branch v1.5.0 https://github.com/google/benchmark.git ; fi
-RUN if [ "$ROSDISTRO" = "kinetic" ] ; then \
+    mkdir fcl_build && \
+    cd fcl_build && \
+    git clone --branch master https://github.com/flexible-collision-library/fcl.git && \
     cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_CXX_FLAGS="-w -std=c++14" \
-      -DBENCHMARK_ENABLE_GTEST_TESTS=OFF \
-      -DBUILD_SHARED_LIBS=ON \
-      /gbenchmark_build/benchmark && \
+      -DBUILD_TESTING=OFF \
+      /ext_build/fcl_build/fcl && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /gbenchmark_build ; fi
-
-WORKDIR /taskflow_build
-RUN git clone --branch v2.6.0 https://github.com/taskflow/taskflow.git
-RUN cmake \
+    mkdir taskflow_build && \
+    cd taskflow_build && \
+    git clone --branch test/TaskflowVersion3CMake310 https://github.com/Levi-Armstrong/cpp-taskflow.git && \
+    cmake \
       -DCMAKE_BUILD_TYPE=Release \
-      /taskflow_build/taskflow && \
+      /ext_build/taskflow_build/cpp-taskflow && \
     make -j8 && \
     make install && \
     cd .. && \
-    rm -rf /taskflow_build
+    cd .. && \
+    rm -rf /ext_build ; fi
+
+RUN if [ "$ROSDISTRO" = "foxy" ] ; then \
+    mkdir ccd_build && \
+    cd ccd_build && \
+    git clone --branch master https://github.com/danfis/libccd.git && \
+    cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
+      -DCMAKE_C_FLAGS="-w" \
+      -DENABLE_DOUBLE_PRECISION=ON \
+      /ext_build/ccd_build/libccd && \
+    make -j8 && \
+    make install && \
+    cd .. && \
+    mkdir fcl_build && \
+    cd fcl_build && \
+    git clone --branch master https://github.com/flexible-collision-library/fcl.git && \
+    cmake \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_FLAGS="-w -std=c++14" \
+      -DBUILD_TESTING=OFF \
+      /ext_build/fcl_build/fcl && \
+    make -j8 && \
+    make install && \
+    cd .. && \
+    cd .. && \
+    rm -rf /ext_build ; fi
 
 RUN git config --global user.email tesseract@ros-industrial.com && git config --global user.name ROS Industrial
 

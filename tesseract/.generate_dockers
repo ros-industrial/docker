@@ -1,0 +1,4 @@
+#!/bin/bash
+docker build --build-arg ROSDISTRO=melodic --build-arg ROS_BASE_TAG=melodic-perception -t rosindustrial/tesseract:melodic .
+docker build --build-arg ROSDISTRO=noetic --build-arg ROS_BASE_TAG=noetic-perception -t rosindustrial/tesseract:noetic .
+docker build --build-arg ROSDISTRO=foxy --build-arg ROS_BASE_TAG=foxy -t rosindustrial/tesseract:foxy .
